@@ -5,3 +5,10 @@ export const notes = pgTable("notes", {
   title: text().notNull(),
   content: text().notNull(),
 });
+
+export const users = pgTable("users", {
+  id: uuid().defaultRandom().primaryKey(),
+  email: text().notNull().unique(),
+  password: text().notNull(),
+  token: text(),
+});

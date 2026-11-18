@@ -1,7 +1,10 @@
 import { Router } from "express";
 import * as notesController from "../controllers/notes.js";
+import { authRouter } from "./auth.js";
 
 export const router = Router();
+
+router.use("/auth", authRouter);
 
 router.post("/notes", notesController.create);
 router.get("/notes", notesController.list);
