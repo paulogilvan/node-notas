@@ -45,19 +45,21 @@ A API fica disponível em `http://localhost:3000`.
 | `npm start` | Roda a versão compilada (após o build) |
 | `npm run db:generate` | Gera migrations a partir do schema |
 | `npm run db:migrate` | Aplica as migrations no banco |
-| `npm run db:seed` | Insere notas de exemplo |
+| `npm run db:seed` | Insere notas de exemplo (do usuário `seed@example.com` / `123456`) |
 
 ## Endpoints
 
 | Método | Rota | Descrição | Sucesso | Erros |
 |---|---|---|---|---|
 | POST | `/notes` | Cria nota | `201` | `400` |
-| GET | `/notes` | Lista todas as notas | `200` | — |
+| GET | `/notes` | Lista as notas do usuário autenticado | `200` | — |
 | GET | `/notes/:id` | Busca uma nota | `200` | `400`, `404` |
 | PUT | `/notes/:id` | Edita título e/ou conteúdo | `200` | `400`, `404` |
 | DELETE | `/notes/:id` | Exclui nota | `204` | `400`, `404` |
 
 Regras:
+- Todas as rotas `/notes` exigem o header `Authorization: Bearer <token>` (token obtido em `POST /auth/login`). Sem token ou com token inválido, retornam `401`.
+- Cada nota pertence ao usuário que a criou. O usuário só lista, busca, edita e exclui as próprias notas; uma nota de outro usuário responde `404`.
 - `POST`: `title` e `content` são obrigatórios (mínimo 1 caractere).
 - `PUT`: `title` e `content` são opcionais, mas ao menos um deve ser informado.
 - `:id` deve ser um UUID válido.
@@ -95,9 +97,11 @@ src/
 ├── env.ts           # validação das variáveis de ambiente
 ├── db/              # conexão, schema e seed
 ├── routes/          # definição das rotas
+├── middlewares/     # middlewares (ex.: autenticação)
 ├── controllers/     # valida a entrada e responde HTTP
 ├── schemas/         # schemas Zod
-└── services/        # acesso ao banco de dados
+├── services/        # acesso ao banco de dados
+└── types/           # extensões de tipos (ex.: req.userId)
 drizzle/             # migrations geradas
 ```
 
