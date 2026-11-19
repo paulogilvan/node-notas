@@ -22,6 +22,13 @@
       "when": 1794962077599,
       "tag": "0002_foamy_jazinda",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795096630521,
+      "tag": "0003_old_chat",
+      "breakpoints": true
     }
   ]
 }

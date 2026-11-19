@@ -4,6 +4,9 @@ export const notes = pgTable("notes", {
   id: uuid().defaultRandom().primaryKey(),
   title: text().notNull(),
   content: text().notNull(),
+  id_user: uuid()
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });
 
 export const users = pgTable("users", {
