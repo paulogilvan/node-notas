@@ -48,3 +48,17 @@ export async function loginUser({ email, password }: Credentials) {
     throw error;
   }
 }
+
+// Retorna o id do usuário dono do token, ou null quando o token é inválido
+export async function validateToken(token: string) {
+  try {
+    const [user] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.token, token));
+    return user?.id ?? null;
+  } catch (error) {
+    console.error("Erro ao validar token:", error);
+    throw error;
+  }
+}
